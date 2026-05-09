@@ -1,0 +1,63 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: fluig-db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - fluig-db-data:/var/lib/mysql
+    ports:
+      - "${PORT_DB}:3306"
+    command: --default-authentication-plugin=mysql_native_password --innodb-buffer-pool-size=256M --innodb-log-buffer-size=16M --lower-case-table-names=1 --character-set-server=utf8 --collation-server=utf8_general_ci
+    networks:
+      - fluig-net
+
+  fluig:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fluig
+    depends_on:
+      - db
+    environment:
+      - DB_TYPE=${DB_TYPE}
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - JVM_MAX_HEAP=${JVM_MAX_HEAP}
+      - JVM_MIN_HEAP=${JVM_MIN_HEAP}
+      - JVM_MAX_METASPACE=${JVM_MAX_METASPACE}
+      - JVM_MIN_METASPACE=${JVM_MIN_METASPACE}
+      - POOL_EJB=${POOL_EJB}
+      - POOL_HTTP=${POOL_HTTP}
+      - POOL_MDB=${POOL_MDB}
+      - POOL_DS_MAX=${POOL_DS_MAX}
+      - POOL_DS_MIN=${POOL_DS_MIN}
+      - FLUIG_INSTALL_PATH=${FLUIG_INSTALL_PATH}
+      - FLUIG_UPDATE=${FLUIG_UPDATE}
+      - INSTALL_SOLR=${INSTALL_SOLR}
+      - INSTALL_NODE=${INSTALL_NODE}
+      - LS_HOST=${LS_HOST}
+      - LS_PORT=${LS_PORT}
+    volumes:
+      - fluig-app-data:${FLUIG_INSTALL_PATH}
+      - ${INSTALLER_PATH}:/installer/package:ro
+      - ${SCRIPTS_PATH}:/installer/scripts:ro
+    ports:
+      - "${PORT_APP}:8080"
+      - "${PORT_SSL}:8443"
+    networks:
+      - fluig-net
+
+networks:
+  fluig-net:
+    driver: bridge
+
+volumes:
+  fluig-db-data:
+  fluig-app-data:

@@ -1,0 +1,26 @@
+# Instalador Fluig (binário grande)
+FLUIG-*.ZIP
+installer-package/*
+!installer-package/.gitkeep
+jdk-64/
+
+# Backups
+*.sql
+*.bak
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Agents
+.agents/
