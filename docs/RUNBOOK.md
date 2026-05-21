@@ -145,3 +145,18 @@ Como o ambiente subiu "vanilla" (sem injeção forçada de configurações no ba
 5. Salve as configurações.
 
 Após configurar, qualquer e-mail enviado pelo Fluig (como notificações de processos, recuperação de senha, etc.) será capturado e exibido na caixa de entrada do Mailpit.
+
+---
+
+## 8. Criação de Novas Empresas (Volumes)
+
+Ao criar uma nova "Empresa" no painel (`wcmadmin > WCM > Empresas`), você será solicitado a informar o **Volume Físico** (o local onde os arquivos e documentos daquela empresa serão salvos).
+
+Por padrão, toda a pasta de instalação do Fluig (`/opt/totvs/fluig/`) está mapeada e segura dentro do volume Docker `fluig-app-data`. 
+
+Para garantir que os arquivos da sua nova empresa fiquem devidamente organizados e persistidos, utilize a seguinte estrutura de diretório no momento do cadastro:
+
+```text
+/opt/totvs/fluig/repository/wcmdir/wcm/tenants/CODIGO_DA_EMPRESA/volume
+```
+*(Substitua `CODIGO_DA_EMPRESA` pelo código que você definir, como `TESTE`, por exemplo).*
